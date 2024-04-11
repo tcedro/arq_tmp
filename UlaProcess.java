@@ -1,7 +1,9 @@
+// Bibliotecas de leitura e escrita em arquivos
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+// Biblioteca para tratamento de excecao
 import java.io.IOException;
 
 class UlaProcess {
@@ -16,7 +18,7 @@ class UlaProcess {
 
     // parse da primeira entrada (x)
     public static void lerX (String instrucao) {
-        if (instrucao.length()==4) { // numero de um digito
+        if (instrucao.length()==4) { // numero de um digito, Ex: "X=C;" (4 caracteres)
             x = instrucao.charAt(2);
         } else { // numero de dois digitos
             switch(instrucao.substring(2,4)) {
@@ -32,7 +34,7 @@ class UlaProcess {
 
     // parse da segunda entrada (y)
     public static void lerY (String instrucao) {
-        if (instrucao.length()==4) { // numero de um digito 
+        if (instrucao.length()==4) { // numero de um digito. Ex: "Y=3;" (4 caracteres)
             y = instrucao.charAt(2);
         } else {
             switch(instrucao.substring(2,4)) { // numero de dois digitos
@@ -46,28 +48,27 @@ class UlaProcess {
         }
     }
 
-    // parse da operacao a ser realizada (op)
+    // parse da operacao a ser realizada (op code)
     public static void lerOP (String instrucao) {
-        // separa operacao depois do = ate antes do ;
-        String operacao = instrucao.substring(2,instrucao.length()-1);
-
+        // separa operacao depois do '=' ate antes do ';'
+        String operacao = instrucao.substring(2, instrucao.length()-1);
         switch (operacao) { // verifica qual a operacao
-            case "nA":     op = '0'; break;
-            case "AoBn":   op = '1'; break;
-            case "nAeB":   op = '2'; break;
-            case "Lzero":  op = '3'; break;
-            case "AeBn":   op = '4'; break;
-            case "nB":     op = '5'; break;
-            case "AxB":    op = '6'; break;
-            case "AenB":   op = '7'; break; 
-            case "nAoB":   op = '8'; break;
-            case "AxBn":   op = '9'; break;
-            case "Bcopia": op = 'A'; break;
-            case "AeB":    op = 'B'; break;
-            case "Lum":    op = 'C'; break;
-            case "AonB":   op = 'D'; break;
-            case "AoB":    op = 'E'; break;
-            case "Acopia": op = 'F'; break;
+			case "nB": 	    op = '0'; break;
+            case "nAeBn":   op = '1'; break;
+            case "nAeB":    op = '2'; break;
+            case "Lzero":   op = '3'; break;
+            case "AeBn":    op = '4'; break;
+            case "nA": 	    op = '5'; break;
+            case "AxB":     op = '6'; break;
+            case "AenB":    op = '7'; break;
+            case "nAonB":   op = '8'; break;
+            case "nAxnB":   op = '9'; break;
+            case "Bcopia":  op = 'A'; break;
+            case "AeB":     op = 'B'; break;
+            case "Lum":     op = 'C'; break;
+            case "AonB":    op = 'D'; break;
+            case "AoB":     op = 'E'; break;
+            case "Acopia":  op = 'F'; break;
         }
     }
 
@@ -90,17 +91,17 @@ class UlaProcess {
 
             String linhaLida = in.readLine(); // le primeira linha do pseudocodigo
             
-            while (!linhaLida.equals("fim."))  { // comparacao p/terminar pseudocodigo
+            while (!linhaLida.equals("fim."))  { // enquanto a linha for diferente de "fim."
                 boolean mudouOP = false; // indica se a operacao foi alterada ou nao
                 char c = linhaLida.charAt(0);
 
                 switch (c) { // verifica se primeiro char eh uma entrada ou operacao
                     case 'X': lerX(linhaLida); break;
                     case 'Y': lerY(linhaLida); break;
-                    case 'W': lerOP(linhaLida); mudouOP = true; break;
+                    case 'W': lerOP(linhaLida); mudouOP = true; break; // mudouOP == true, indicando que lemos toda instrucao
                 }
                 
-                if(mudouOP) // condicao p/escrever codigo no arquivo .hex
+                if(mudouOP) // condicao p/ escrever codigo no arquivo .hex
                     out.write(gerarCodigo());   
                 
                 linhaLida = in.readLine(); // le proxima linha ao final p/repeticao
